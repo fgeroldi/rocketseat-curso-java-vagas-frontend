@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Cadastro do Candidato</title>
+</head>
+<body class="bg-gray-900 h-screen items-center flex justify-center">
+    <form id="submitForm" th:action="@{/candidate/create}" method="post" class="flex gap-24" th:object="${candidate}">
+        <div class="space-y-8 bg-zinc-950 rounded-md p-10">
+            <p class="text-white">Candidato, crie seu cadastro grautitamente</p>
+
+            <input type="text" th:field="*{username}" name="username" class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2" placeholder="Digite o seu usuário"/>
+            <input type="text" th:field="*{name}" name="name" class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2" placeholder="Digite seu nome"/>
+            <input type="email" th:field="*{email}" name="email" class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2" placeholder="Email"/>
+            <input type="password" th:field="*{password}" id="password" name="password" class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2" placeholder="Senha"/>
+            <input type="password" id="confirmPassword" name="confirmPassword" class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2" placeholder="Confirme sua senha"/>
+            
+            <textarea name="description" th:field="*{description}" class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2" placeholder="Digite uma breve descrição sobre voce"></textarea>
+
+            <p class="text-center text-red-400 hidden" id="passwordMismatchError">As senhas não conferem</p>
+            <p class="text-center text-red-400 hidden" id="passwordEmptyError">A senha é obrigatória</p>
+            <button class="bg-green-900 w-96 p-4 rounded text-white hover:bg-green-700">Entrar</button>
+            <a href="/candidate/login" class="block text-center text-green-700 underline underline-offset-2 hover:text-green-600">Login</a>
+        </div>
+        <div class="text-white max-w-80 text-6xl flex items-center">
+            Gestão de Vagas
+        </div>
+    </form>
+
+    <script>
+        document.getElementById("submitForm").addEventListener("submit", (event) => {
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+
+            if(password == null || password == "") {
+                document.getElementById("passwordEmptyError").classList.remove("hidden");
+                event.preventDefault();
+            } else if (!document.getElementById("passwordEmptyError").classList.contains("hidden")) {
+                document.getElementById("passwordEmptyError").classList.add("hidden");
+            }
+
+            if(password !== confirmPassword) {
+                document.getElementById("passwordMismatchError").classList.remove("hidden");
+                event.preventDefault();
+            } else if (!document.getElementById("passwordMismatchError").classList.contains("hidden")) {
+                document.getElementById("passwordMismatchError").classList.add("hidden");
+            }
+        });
+    </script>
+</body>
+</html>
